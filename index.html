@@ -12,7 +12,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png') center/contain no-repeat fixed;
+            background: url('https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png') center/contain no-repeat fixed;
+            background-color: #fff7e6;  /* 改成淺黃色背景，配合皮卡丘 */
             font-family: "Microsoft YaHei", sans-serif;
         }
 
@@ -21,7 +22,7 @@
         }
 
         .birthday-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.7);  /* 將不透明度從 0.95 降低到 0.7 */
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -34,13 +35,24 @@
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             animation: bounce 2s infinite;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #ffbe0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% 200%;
+            animation: gradientText 3s infinite, bounce 2s infinite;
         }
 
         .message {
-            color: #333;
+            color: #000;  /* 將文字顏色改深一點，確保在透明背景上清晰可見 */
             line-height: 1.6;
             font-size: 1.2rem;
             margin-bottom: 2rem;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);  /* 添加文字陰影提高可讀性 */
+        }
+
+        .cake-container {
+            margin: 2rem 0;
         }
 
         .cake {
@@ -120,6 +132,12 @@
         }
 
         @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradientText {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
@@ -219,6 +237,75 @@
                 opacity: 0;
             }
         }
+
+        /* 添加閃光效果 */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: white;
+            animation: sparkle 1.5s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1) rotate(180deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 添加頭像旋轉發光效果 */
+        .pokemon-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            border: 3px solid #4ecdc4;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: avatarGlow 2s infinite;
+        }
+
+        @keyframes avatarGlow {
+            0% {
+                box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(78, 205, 196, 0.8);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+                transform: scale(1);
+            }
+        }
+
+        .pokemon-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 添加署名樣式 */
+        .signature {
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            font-style: italic;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+        }
     </style>
 </head>
 <body>
@@ -233,6 +320,9 @@
                     <div class="balloon"></div>
                     <div class="balloon"></div>
                 </div>
+                <div class="pokemon-avatar">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" alt="傑尼龜">
+                </div>
                 <h1 class="title">生日快樂！</h1>
                 <p class="message">
                     親愛的譚蘊炘：<br>
@@ -240,8 +330,13 @@
                     願你所有的夢想都能實現，<br>
                     願你的每一天都精彩紛呈！
                 </p>
-                <div class="cake">
-                    🎂
+                <div class="cake-container">
+                    <div class="cake">
+                        🎂
+                    </div>
+                </div>
+                <div class="signature">
+                    Alan Hu的祝福
                 </div>
             </div>
         </div>
@@ -276,6 +371,27 @@
             }
         }
 
+        // 在 script 部分添加閃光效果的代碼
+        function createSparkles() {
+            const card = document.querySelector('.birthday-card');
+            
+            setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                
+                // 隨機位置
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                
+                card.appendChild(sparkle);
+                
+                // 動畫結束後移除元素
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1500);
+            }, 200);
+        }
+
         function updateCountdown() {
             countdownNumber.textContent = count;
             countdownNumber.style.animation = 'none';
@@ -291,6 +407,7 @@
                     countdown.style.display = 'none';
                     birthdayContent.classList.add('show-content');
                     createConfetti(); // 在显示生日祝福时触发礼炮效果
+                    createSparkles(); // 添加閃光效果
                 }, 1000);
             }
         }
