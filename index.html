@@ -303,13 +303,17 @@
             object-fit: cover;
         }
 
-        /* 添加署名樣式 */
-        .signature {
+        /* 修改署名鏈接樣式 */
+        .signature-link {
             color: #666;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            font-style: italic;
-            text-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;  /* 添加指針樣式 */
+        }
+
+        .signature-link:hover {
+            color: #ff6b6b;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -326,13 +330,13 @@
                     <div class="balloon"></div>
                 </div>
                 <div class="pokemon-avatar">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" alt="傑尼龜">
+                    <img src="https://tw.portal-pokemon.com/play/resources/pokedex/img/pm/5794f0251b1180998d72d1f8568239620ff5279c.png" alt="傑尼龜">
                 </div>
                 <h1 class="title">生日快樂！</h1>
                 <p class="message">
-                    親愛的譚蘊炘：<br>
+                    親愛的譚蘊炘，<br>
                     願你的生日充滿歡樂和溫暖，<br>
-                    願你所有的夢想都能實現，<br>
+                    願你的夢想都能實現，<br>
                     願你的每一天都精彩紛呈！
                 </p>
                 <div class="cake-container">
@@ -341,7 +345,7 @@
                     </div>
                 </div>
                 <div class="signature">
-                    Alan Hu的祝福
+                    <a href="https://alan.110215.xyz" target="_blank" rel="noopener noreferrer" class="signature-link">Alan Hu的祝福</a>
                 </div>
             </div>
         </div>
@@ -420,7 +424,7 @@
 
             // 添加打字機效果
             const messageElement = document.querySelector('.message');
-            const messageText = `親愛的譚蘊炘：\n願你的生日充滿歡樂和溫暖，\n願你所有的夢想都能實現，\n願你的每一天都精彩紛呈！`;
+            const messageText = `親愛的譚蘊炘，\n願你的生日充滿歡樂和溫暖，\n願你所有的夢想都能實現，\n願你的每一天都精彩紛呈！`;
             typeWriter(messageElement, messageText, 100);
         }
 
