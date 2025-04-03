@@ -19,15 +19,19 @@
 
         .container {
             text-align: center;
+            max-width: 600px;  /* 限制最大寬度 */
+            margin: 0 auto;
         }
 
         .birthday-card {
-            background: rgba(255, 255, 255, 0.7);  /* 將不透明度從 0.95 降低到 0.7 */
+            background: rgba(255, 255, 255, 0.7);
             padding: 2rem;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             position: relative;
             animation: fadeIn 1s ease-in;
+            margin: 1rem;  /* 添加邊距 */
+            max-width: 400px;  /* 限制卡片最大寬度 */
         }
 
         .title {
@@ -147,6 +151,7 @@
             .birthday-card {
                 margin: 1rem;
                 padding: 1rem;
+                max-width: 90%;  /* 在手機端使用百分比寬度 */
             }
             
             .title {
@@ -392,6 +397,33 @@
             }, 200);
         }
 
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+
+        function showBirthdayContent() {
+            countdown.style.display = 'none';
+            birthdayContent.classList.add('show-content');
+            createConfetti();
+            createSparkles();
+
+            // 添加打字機效果
+            const messageElement = document.querySelector('.message');
+            const messageText = `親愛的譚蘊炘：\n願你的生日充滿歡樂和溫暖，\n願你所有的夢想都能實現，\n願你的每一天都精彩紛呈！`;
+            typeWriter(messageElement, messageText, 100);
+        }
+
         function updateCountdown() {
             countdownNumber.textContent = count;
             countdownNumber.style.animation = 'none';
@@ -403,16 +435,11 @@
             if (count >= 0) {
                 setTimeout(updateCountdown, 1000);
             } else {
-                setTimeout(() => {
-                    countdown.style.display = 'none';
-                    birthdayContent.classList.add('show-content');
-                    createConfetti(); // 在显示生日祝福时触发礼炮效果
-                    createSparkles(); // 添加閃光效果
-                }, 1000);
+                setTimeout(showBirthdayContent, 1000);
             }
         }
 
-        // 开始倒计时
+        // 開始倒計時
         updateCountdown();
     </script>
 </body>
