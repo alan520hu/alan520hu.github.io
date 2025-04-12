@@ -308,12 +308,51 @@
             color: #666;
             text-decoration: none;
             transition: color 0.3s ease;
-            cursor: pointer;  /* 添加指針樣式 */
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px 10px;
         }
 
         .signature-link:hover {
             color: #ff6b6b;
             text-decoration: underline;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        /* 修改語言選擇樣式 */
+        .language-switcher {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+
+        .language-select {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 5px center;
+            background-size: 15px;
+            padding-right: 25px;
+        }
+
+        .language-select:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .language-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.3);
         }
     </style>
 </head>
@@ -324,6 +363,13 @@
     <div class="birthday-content">
         <div class="container">
             <div class="birthday-card">
+                <div class="language-switcher">
+                    <select class="language-select">
+                        <option value="zh-TW" selected>繁體中文</option>
+                        <option value="zh-CN">简体中文</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
                 <div class="balloons">
                     <div class="balloon"></div>
                     <div class="balloon"></div>
@@ -345,7 +391,7 @@
                     </div>
                 </div>
                 <div class="signature">
-                    <a href="https://alan.110215.xyz" target="_blank" rel="noopener noreferrer" class="signature-link">Alan Hu的祝福</a>
+                    <a href="https://alan.110215.xyz" target="_blank" rel="noopener noreferrer" class="signature-link" onclick="window.open('https://alan.110215.xyz', '_blank')">Alan Hu的祝福</a>
                 </div>
             </div>
         </div>
@@ -403,11 +449,15 @@
 
         function typeWriter(element, text, speed = 100) {
             let i = 0;
-            element.textContent = '';
+            element.innerHTML = '';  // 改用 innerHTML
             
             function type() {
                 if (i < text.length) {
-                    element.textContent += text.charAt(i);
+                    if (text.charAt(i) === '\n') {
+                        element.innerHTML += '<br>';  // 處理換行
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                    }
                     i++;
                     setTimeout(type, speed);
                 }
@@ -445,6 +495,45 @@
 
         // 開始倒計時
         updateCountdown();
+
+        // 添加語言切換功能
+        const messages = {
+            'zh-TW': {
+                title: '生日快樂！',
+                message: '親愛的譚蘊炘，\n願你的生日充滿歡樂和溫暖，\n願你所有的夢想都能實現，\n願你的每一天都精彩紛呈！',
+                signature: 'Alan Hu的祝福'
+            },
+            'zh-CN': {
+                title: '生日快乐！',
+                message: '亲爱的谭蕴炘，\n愿你的生日充满欢乐和温暖，\n愿你所有的梦想都能实现，\n愿你的每一天都精彩纷呈！',
+                signature: 'Alan Hu的祝福'
+            },
+            'en': {
+                title: 'Happy Birthday!',
+                message: 'Dear Tan Yun Xin,\nMay your birthday be filled with joy and warmth,\nMay all your dreams come true,\nMay every day be wonderful!',
+                signature: 'Blessings from Alan Hu'
+            }
+        };
+
+        function updateLanguage(lang) {
+            const title = document.querySelector('.title');
+            const message = document.querySelector('.message');
+            const signature = document.querySelector('.signature-link');
+            
+            title.textContent = messages[lang].title;
+            message.textContent = messages[lang].message;
+            signature.textContent = messages[lang].signature;
+        }
+
+        const languageSelect = document.querySelector('.language-select');
+
+        languageSelect.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            updateLanguage(lang);
+        });
+
+        // 設置默認語言
+        updateLanguage('zh-TW');
     </script>
 </body>
 </html> 
